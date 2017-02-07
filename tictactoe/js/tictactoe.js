@@ -7,8 +7,12 @@ var context;
 //get width and height of canvas el
 var width;
 var height;
-    
 
+var score = {
+    win: 0,
+    lost: 0,
+    tie:0
+};
 
 var xBoard = 0;
 var oBoard = 0;
@@ -109,6 +113,8 @@ function drawX(x, y) {
     var y0 = iy*h3;
     var y1 = y0+h3;
 
+    context.arc((x0+1)/2, (y0+y1)/2);
+
     context.moveTo(x0,y0);
     context.lineTo(x1,y1);
 
@@ -118,6 +124,25 @@ function drawX(x, y) {
     context.stroke();
     context.closePath();
 
+}
+
+function isEmpty(xBoard, oBoard, bit) {
+    return (((xBoard & bit) == 0) && ((oBoard & bit) == 0));
+}
+
+function markBit(markBit, player, x, y) {
+    if (player === 'O') {
+        oBoard = oBoard | markBit;
+        drawO(x, y);
+    } else {
+        xBoard = xBoard | markBit;
+        drawX(x, y);
+    }
+}
+
+function play(){
+    var bestPlay = simulate(oBoard, xBoard);
+    markBit(bestPlay, 'O');
 }
 
 function clickHandler(event) {
@@ -134,10 +159,29 @@ function clickHandler(event) {
 
     drawX(x-x1, y-y1);
 
-    // var x = Math.floor((event.clientX-canvas.offsetLeft)/(width/3));
-    // var y = Math.floor((event.clientY - canvas.offsetTop) / (height / 3));
+    var x = Math.floor((event.clientX-canvas.offsetLeft)/(width/3));
+    var y = Math.floor((event.clientY - canvas.offsetTop) / (height / 3));
 
-    // var bit = (1 << x + (y * 3));
+    var bit = (1 << x + (y * 3));
+
+    cosole.log('bit:' + bit);
+
+    if(isEmpty(xBoard, oBoard, bit)){
+        markBit(bit, 'X', x-x1, y-y1);
+        //AI Action
+        if(checkWinner(xBoard)){
+            alert('You Win!');
+            score.win++;
+            //restart();
+        } else {
+            //console.log('Play AI');
+            //
+            play();
+
+        }
+    }else{
+        alert('cell occupied');
+    }
 
     // console.log('ch:x=' + x + " ,y=" + y + " ,b=" + bit);
     // if (isEmpty(xBoard, oBoard, bit)) {
