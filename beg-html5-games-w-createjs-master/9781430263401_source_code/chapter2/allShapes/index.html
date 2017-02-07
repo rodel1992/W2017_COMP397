@@ -8,7 +8,7 @@
 
 <body onload="init()" style="margin: 20px">
 
-<canvas id="canvas" width="800" height="600" style="border: black solid 1px"></canvas>
+<canvas id="canvas" width="1100" height="600" style="border: black solid 1px"></canvas>
 
 </body>
 
@@ -22,6 +22,11 @@
     }
     function handleTick(e) {
         stage.update();
+    }
+
+    function getVertex(radius,angle){
+        return {x:radius*Math.cos(angle),
+                y:radius*Math.sin(angle)}
     }
 
     function start() {
@@ -51,6 +56,18 @@
         poly.y = 70;
         stage.addChild(poly);
 
+        //STAR2
+        var poly2 = new createjs.Shape();
+        poly2.graphics.beginStroke('#000');
+        poly2.graphics.beginFill('#90ABC2');
+        poly2.graphics.drawPolyStar(0, 0, 50, 15, 0.6, -90);
+        poly2.x = 550;
+        poly2.y = 70;
+        stage.addChild(poly2);
+
+        Gear1();
+        Gear2();
+
         //TRIANGLE
         var tri = new createjs.Shape();
         tri.graphics.beginStroke('#000');
@@ -63,6 +80,8 @@
         tri.y = 150;
         stage.addChild(tri);
 
+
+
         ///ROUNDED RECTANGLE
         var roundedRectangle = new createjs.Shape();
         roundedRectangle.graphics.beginStroke('#000');
@@ -71,6 +90,106 @@
         roundedRectangle.x = roundedRectangle.y = 150;
         stage.addChild(roundedRectangle);
 
+    }
+
+    function Gear1(){
+                //GEAR1
+        //parameters(they will be function arguments when we refactor)
+        var INNER_RADIUS=50;
+        var OUTER_RADIUS=100;
+        var NR_TEETH=16;
+
+        var tooth_angle = Math.PI*2/NR_TEETH;
+
+        var vertices=[];
+
+        for(var i=0; i<NR_TEETH; i++){
+            //angles to the three vertices
+            var start_angle = tooth_angle*i;
+            var end_angle = start_angle+tooth_angle;
+            var mid_angle = start_angle+tooth_angle/2;
+
+            var vertex1 = getVertex(INNER_RADIUS, start_angle);
+            var vertex2 = getVertex(OUTER_RADIUS, mid_angle);
+            var vertex3 = getVertex(INNER_RADIUS, end_angle);
+
+            vertices.push(vertex1);
+            vertices.push(vertex2);
+            vertices.push(vertex3);
+        }
+        var gear1 = new createjs.Shape();
+        gear1.graphics.beginStroke('#000');
+        gear1.graphics.beginFill('#00FF00');
+
+        gear1.graphics.moveTo(vertices[0].x, vertices[0].y);
+        
+        for(var i=0; i<NR_TEETH; i++){
+            var i1 = 3*i, i2 = i1+1, i3 = i1+2;
+
+            //gear1.graphics.lineTo(vertices[i1].x, vertices[i1].y);
+            gear1.graphics.lineTo(vertices[i2].x, vertices[i2].y);
+            gear1.graphics.lineTo(vertices[i3].x, vertices[i3].y);
+        }
+
+        //gear1.graphics.drawPolyStar(0, 0, 50, 15, 0.6, -90);
+        gear1.x = 700;
+        gear1.y = 100;
+        stage.addChild(gear1);
+    }
+
+    function Gear2(){
+        //GEAR2
+        var INNER_GAP=6;
+        var TOOTH_SIZE=8;
+        var INNER_RADIUS=50;
+        var OUTER_RADIUS=70;
+        var NR_TEETH=8;
+
+        var tooth_angle = Math.PI*2/NR_TEETH;
+
+        var vertices=[];
+
+        for(var i=0; i<NR_TEETH; i++){
+            //angles to the three vertices
+            var start_angle = tooth_angle*i;
+            var mid_angle = start_angle+tooth_angle/2;
+            var end_angle = start_angle+tooth_angle;
+
+            var vertex1 = getVertex(INNER_RADIUS, start_angle);
+            var vertex2 = getVertex(INNER_RADIUS, start_angle+0.1);
+            var vertex3 = getVertex(OUTER_RADIUS, mid_angle-0.1);
+            var vertex4 = getVertex(OUTER_RADIUS, mid_angle+0.1);
+            var vertex5 = getVertex(INNER_RADIUS, end_angle-0.1);
+            var vertex6 = getVertex(INNER_RADIUS, end_angle);
+
+            vertices.push(vertex1);
+            vertices.push(vertex2);
+            vertices.push(vertex3);
+            vertices.push(vertex4);
+            vertices.push(vertex5);
+            vertices.push(vertex6);
+        }
+        var gear2 = new createjs.Shape();
+        gear2.graphics.beginStroke('#000');
+        gear2.graphics.beginFill('#00FF00');
+
+        gear2.graphics.moveTo(vertices[0].x, vertices[0].y);
+        
+        for(var i=0; i<NR_TEETH; i++){
+            var i1 = 6*i, i2 = i1+1, i3 = i1+2, i4=i1+3, i5=i1+4, i6=i1+5;
+
+            //gear2.graphics.lineTo(vertices[i1].x, vertices[i1].y);
+            gear2.graphics.lineTo(vertices[i2].x, vertices[i2].y);
+            gear2.graphics.lineTo(vertices[i3].x, vertices[i3].y);
+            gear2.graphics.lineTo(vertices[i4].x, vertices[i4].y);
+            gear2.graphics.lineTo(vertices[i5].x, vertices[i5].y);
+            gear2.graphics.lineTo(vertices[i6].x, vertices[i6].y);
+        }
+
+        //gear1.graphics.drawPolyStar(0, 0, 50, 15, 0.6, -90);
+        gear2.x = 950;
+        gear2.y = 100;
+        stage.addChild(gear2);
     }
 
 </script>
