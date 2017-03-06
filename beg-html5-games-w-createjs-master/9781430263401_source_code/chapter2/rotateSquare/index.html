@@ -29,6 +29,8 @@
         var square = new createjs.Shape(g);
         square.x = 150;
         square.y = 100;
+        square.regX = 50;
+        square.regY = 50;
         stage.addChild(square);
         createjs.Tween.get(square).to({rotation:360},3000);
     }

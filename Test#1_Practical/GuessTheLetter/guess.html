@@ -1,0 +1,82 @@
+<!doctype>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script>
+
+  var answer;
+  var guesses=0;
+  var hint='';
+  var letterIndex;
+  var guessLetterIndex;
+
+    var letters = [
+               "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o",
+               "p","q","r","s","t","u","v","w","x","y","z"
+               ];
+    var letterToGuess = letters[Math.floor(Math.random() * letters.length)];
+    
+
+  function checkGuess(guess){
+    hint='';
+    letterIndex = letters.indexOf(letterToGuess);
+    guessLetterIndex = letters.indexOf(guess);
+
+    guesses = guesses + 1;
+
+    if(guesses <= 7 ){
+        if(guessLetterIndex == letterIndex && guesses < 7){
+        hint='You Win! Great Job!';
+        } 
+        else if(guessLetterIndex == letterIndex){
+        hint='You Win!';
+        } else if (guessLetterIndex < letterIndex) {
+        hint='Higher...';
+        } else {
+        hint='Lower...';
+        }
+    }else{
+        hint='You Lost!';
+        
+    }
+
+    return hint;
+  }
+
+  $(document).ready(function(){
+    $('.hintvalue').html(letterToGuess);
+
+    $("form a#guess").click(function() {
+      var guess=$("input:first").val();
+      var guessHint=checkGuess(guess);
+      
+      if(guessHint == "You Lost!"){
+          $('.hint').html(guessHint);
+          $('#guess').prop('disabled', true);
+      }else{
+      $('.hint').html(guessHint);
+      $('.guesscount').html(guesses);
+    }
+
+    });
+
+  });
+
+</script>
+</head>
+
+<body>
+<div class="hint">Guess a number</div>
+<div class="hintvalue"></div>
+<div class="guesscount">0</div>
+
+<form id="game_form" name="game_form">
+  <label for="guess">Guess</label>
+  <input type="text" name="guess" />
+  <a href="#" value="Guess!" id="guess" class="button">Guess</a>
+</form>
+
+</body>
+</html>
+

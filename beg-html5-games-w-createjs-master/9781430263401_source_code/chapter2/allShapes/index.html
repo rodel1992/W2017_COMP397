@@ -18,6 +18,7 @@
         stage = new createjs.Stage(document.getElementById('canvas'));
         createjs.Ticker.addEventListener("tick", handleTick);
         createjs.Ticker.setFPS(60);
+        
         start();
     }
     function handleTick(e) {
@@ -143,7 +144,7 @@
         var TOOTH_SIZE=8;
         var INNER_RADIUS=50;
         var OUTER_RADIUS=70;
-        var NR_TEETH=8;
+        var NR_TEETH=16;
 
         var tooth_angle = Math.PI*2/NR_TEETH;
 
@@ -156,10 +157,10 @@
             var end_angle = start_angle+tooth_angle;
 
             var vertex1 = getVertex(INNER_RADIUS, start_angle);
-            var vertex2 = getVertex(INNER_RADIUS, start_angle+0.1);
-            var vertex3 = getVertex(OUTER_RADIUS, mid_angle-0.1);
-            var vertex4 = getVertex(OUTER_RADIUS, mid_angle+0.1);
-            var vertex5 = getVertex(INNER_RADIUS, end_angle-0.1);
+            var vertex2 = getVertex(INNER_RADIUS, start_angle+0.1*tooth_angle);
+            var vertex3 = getVertex(OUTER_RADIUS, mid_angle-0.1*tooth_angle);
+            var vertex4 = getVertex(OUTER_RADIUS, mid_angle+0.1*tooth_angle);
+            var vertex5 = getVertex(INNER_RADIUS, end_angle-0.1*tooth_angle);
             var vertex6 = getVertex(INNER_RADIUS, end_angle);
 
             vertices.push(vertex1);

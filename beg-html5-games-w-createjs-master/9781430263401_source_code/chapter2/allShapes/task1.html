@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="../lib/easeljs-0.7.1.min.js"></script>
+    <script src="../lib/tweenjs-0.5.1.min.js"></script>
+</head>
+
+<body onload="init()" style="margin: 20px">
+
+<canvas id="canvas" width="1100" height="600" style="border: black solid 1px"></canvas>
+
+</body>
+
+<script>
+    var stage;
+    function init() {
+        stage = new createjs.Stage(document.getElementById('canvas'));
+        createjs.Ticker.addEventListener("tick", handleTick);
+        createjs.Ticker.setFPS(60);
+        start();
+    }
+    function handleTick(e) {
+        stage.update();
+    }
+
+    function getVertex(radius,angle){
+        return {x:radius*Math.cos(angle),
+                y:radius*Math.sin(angle)}
+    }
+
+    function start() {
+        
+        Gear1();
+
+
+    }
+
+    function Gear1(){
+                //GEAR1
+        //parameters(they will be function arguments when we refactor)
+        var INNER_RADIUS=50;
+        var OUTER_RADIUS=100;
+        var NR_TEETH=16;
+
+        var tooth_angle = Math.PI*2/NR_TEETH;
+
+        var vertices=[];
+
+        for(var i=0; i<NR_TEETH; i++){
+            //angles to the three vertices
+            var start_angle = tooth_angle*i;
+            var end_angle = start_angle+tooth_angle;
+            var mid_angle = start_angle+tooth_angle/2;
+
+            var vertex1 = getVertex(INNER_RADIUS, start_angle);
+            var vertex2 = getVertex(OUTER_RADIUS, mid_angle);
+            var vertex3 = getVertex(INNER_RADIUS, end_angle);
+
+            vertices.push(vertex1);
+            vertices.push(vertex2);
+            vertices.push(vertex3);
+        }
+        var gear1 = new createjs.Shape();
+        gear1.graphics.beginStroke('#000');
+        gear1.graphics.beginFill('#00FF00');
+
+        gear1.graphics.moveTo(vertices[0].x, vertices[0].y);
+        
+        for(var i=0; i<NR_TEETH; i++){
+            var i1 = 3*i, i2 = i1+1, i3 = i1+2;
+
+            //gear1.graphics.lineTo(vertices[i1].x, vertices[i1].y);
+            gear1.graphics.lineTo(vertices[i2].x, vertices[i2].y);
+            gear1.graphics.lineTo(vertices[i3].x, vertices[i3].y);
+        }
+
+        //gear1.graphics.drawPolyStar(0, 0, 50, 15, 0.6, -90);
+        gear1.x = 700;
+        gear1.y = 100;
+        stage.addChild(gear1);
+    }
+
+
+</script>
+
+</html>

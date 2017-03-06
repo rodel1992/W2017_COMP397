@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Four In A Row </title>
+        <script src="js/easeljs-0.7.1.min.js"></script>
+        <script src="js/tweenjs-0.5.1.min.js"></script>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <link href='http://fonts.googleapis.com/css?family=Permanent+Marker' rel='stylesheet' type='text/css' />
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body onload="init()" style="margin: 20px">
+            <header></header>
+            <div id="main">
+                <h1>Four In A Row</h1>
+                <canvas id="canvas" width="1100" height="600" style="border: black solid 1px">
+                    <canvas id="game" width="300" height="300"></canvas>
+                </canvas>
+                <ul>
+                    <li><strong>Wins:</strong><span id="wins">0</span></li>
+                    <li><strong>Losses:</strong><span id="losses">0</span></li>
+                    <li><strong>Ties:</strong><span id="ties">0</span></li>
+                </ul>
+            </div>
+            <div id="score">  
+            </div>
+            <script src="js/tictactoe.js"></script>
+            <script>
+            init('game');
+            </script>
+            <footer></footer>
+    </body>
+    <script>
+    var stage;
+    function init() {
+        stage = new createjs.Stage(document.getElementById('canvas'));
+        createjs.Ticker.addEventListener("tick", handleTick);
+        createjs.Ticker.setFPS(60);
+        stage.addChild(document.getElementById('game'));
+        start();
+    }
+    function handleTick(e) {
+        stage.update();
+    }
+    function start() {
+
+        ///CIRCLE
+        var circle = new createjs.Shape();
+        circle.graphics.beginStroke('#000');
+        circle.graphics.beginFill('#e8110d');
+        circle.graphics.drawCircle(0, 0, 50);
+        circle.x = 250;
+        circle.y = 70;
+        stage.addChild(circle);
+}
+    </script>
+</html>
